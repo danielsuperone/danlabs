@@ -83,7 +83,8 @@
         const form = document.getElementById('login-form');
         const pw = document.getElementById('pw');
         const msg = document.getElementById('login-msg');
-        const CORRECT = '123456';
+        const PORTFOLIO_PASSWORD = '0000';
+        const PRIVATE_PASSWORD = '123456';
 
         function getQueryParam(name){
           const u = new URL(window.location.href);
@@ -92,14 +93,14 @@
 
         form.addEventListener('submit', ()=>{
           const val = pw.value || '';
-          if (val === CORRECT){
-            msg.textContent = 'Success — opening...';
-            const target = getQueryParam('target');
-            if (target === 'portfolio'){
-              window.open('https://portfolio.danlabs.me', '_blank', 'noopener');
-            } else {
-              window.location.href = 'private.html';
-            }
+          const target = getQueryParam('target');
+          
+          if (val === PORTFOLIO_PASSWORD && target === 'portfolio'){
+            msg.textContent = 'Success — opening portfolio...';
+            window.open('https://portfolio.danlabs.me', '_blank', 'noopener');
+          } else if (val === PRIVATE_PASSWORD){
+            msg.textContent = 'Success — redirecting...';
+            window.location.href = 'private.html';
           } else {
             msg.textContent = 'Incorrect password';
             msg.style.color = 'rgb(239 68 68)';

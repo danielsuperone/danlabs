@@ -132,23 +132,24 @@
     { title:'GameBox', href:'https://gamebox.danlabs.me', emoji:'🎮', accent:'#60A5FA', description:'Play Mafia, GeoGuessr-style rounds, Who Am I, and more with friends. Fast lobbies, voice-ready rooms, instant invites.', gradient:{from:'#60A5FA',via:'#A78BFA',to:'#22D3EE'} },
     { title:'GAMBL', href:'https://gambl.danlabs.me', emoji:'💎', accent:'#22D3EE', description:'Casino-grade feel with a clean UI. Think Stake-esque: dice, crash, mines, all with on-page stats and fairness proofs.', gradient:{from:'#06B6D4',via:'#22D3EE',to:'#10B981'} },
     { title:'StudyFlow', href:'https://studyflow.danlabs.me', emoji:'📚', accent:'#F59E0B', description:'Smart study management platform with flashcards, progress tracking, and spaced repetition algorithms. Boost your learning efficiency.', gradient:{from:'#F59E0B',via:'#EF4444',to:'#EC4899'} },
-    { title:'Portfolio', href:null, emoji:'🔗', accent:'#34D399', description:'Plug in your personal site—this tile becomes your gateway to whatever URL you choose.', gradient:{from:'#A78BFA',via:'#34D399',to:'#22D3EE'}, isPortfolio:true },
+    { title:'Photography', href:'https://photography.danlabs.me', emoji:'📸', accent:'#EC4899', description:'Explore my photography portfolio. Capturing moments, stories, and perspectives through the lens.', gradient:{from:'#EC4899',via:'#F59E0B',to:'#EF4444'} },
+    { title:'Portfolio', href:'login.html?target=portfolio', emoji:'🌟', accent:'#8B5CF6', description:'View my professional portfolio and projects. Showcasing work, achievements, and creative endeavors.', gradient:{from:'#8B5CF6',via:'#EC4899',to:'#F59E0B'}, requiresLogin:true },
     { title:'About DanLabs', href:'https://danlabs.me/about', emoji:'🌐', accent:'#A78BFA', description:'Team, stack, and roadmap. Minimal words, maximal clarity. Keep it transparent and up-to-date.', gradient:{from:'#A78BFA',via:'#60A5FA',to:'#38BDF8'} }
   ];
 
   const tilesGrid = document.getElementById('tiles-grid');
-  let portfolioUrl = localStorage.getItem('portfolioUrl') || '';
 
   function buildTile(item, idx){
     const a = document.createElement('a');
     a.href = item.href || '#';
-    if (item.href) a.target = '_blank';
-    a.className = 'group relative block rounded-3xl p-[1px] transition';
+    // Only open in new tab if it's an external link (not login.html)
+    if (item.href && !item.requiresLogin) a.target = '_blank';
+    a.className = 'group relative block rounded-3xl p-[1px] transition overflow-hidden';
     a.style.background = `linear-gradient(140deg, ${item.gradient.from} 0%, ${item.gradient.via} 40%, ${item.gradient.to} 100%)`;
     a.dataset.index = idx;
 
     const inner = document.createElement('div');
-    inner.className = 'rounded-3xl bg-white/80 p-5 backdrop-blur-xl transition-transform duration-500 ease-out dark:bg-white/5 transform will-change-transform';
+    inner.className = 'tile-glass rounded-3xl p-5 transition-transform duration-500 ease-out transform will-change-transform';
 
     const row = document.createElement('div'); row.className = 'relative flex items-start gap-4';
     // simplified icon wrapper: no ring or white gradient so emoji sits directly on the tile inner background
@@ -164,7 +165,7 @@
     h3wrap.appendChild(h3); h3wrap.appendChild(arrow);
 
     const p = document.createElement('p'); p.className = 'mt-1 line-clamp-3 text-sm text-black/70 dark:text-white/70';
-    p.textContent = item.isPortfolio && portfolioUrl ? `Currently set to ${portfolioUrl}` : item.description;
+    p.textContent = item.description;
 
     txt.appendChild(h3wrap); txt.appendChild(p);
     row.appendChild(iconWrap); row.appendChild(txt); inner.appendChild(row);
@@ -172,45 +173,6 @@
     const flare = document.createElement('div'); flare.className = 'pointer-events-none absolute inset-0 rounded-3xl opacity-0 blur-md transition group-hover:opacity-100'; flare.style.background = `radial-gradient(60% 40% at 20% -10%, ${item.accent}40%, transparent 60%)`;
     inner.appendChild(flare);
     a.appendChild(inner);
-
-    if (item.isPortfolio){
-        // If a portfolio URL is configured, open it; otherwise route through the login gate.
-        // Compute a directory-aware login URL so the site behaves the same when deployed under a subpath.
-        a.addEventListener('click', (e)=>{
-          e.preventDefault();
-          if (portfolioUrl) {
-            // Only open absolute http(s) or protocol-relative URLs stored in portfolioUrl.
-            // This prevents local or relative values from opening unexpected pages.
-            try {
-              const isAbsolute = /^(https?:)?\/\//i.test(portfolioUrl);
-              if (isAbsolute) {
-                try { window.open(portfolioUrl, '_blank', 'noopener'); } catch(_) { window.location.href = portfolioUrl; }
-                return;
-              }
-              // Not an absolute URL — ignore and fall through to the login flow
-            } catch (e) {
-              // If regex or window.open throws for some reason, fallback to login logic below
-            }
-          }
-
-          try {
-            // When opened via file://, use a simple relative navigation so local files resolve correctly.
-            if (location.protocol === 'file:') {
-              window.location.href = 'login.html?target=portfolio';
-              return;
-            }
-
-            // Ensure we stay in the same directory as the current document. If the current path
-            // doesn't end with a slash, append one so we build a directory path (e.g. '/dg' -> '/dg/').
-            const basePath = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
-            const loginHref = location.origin + basePath + 'login.html?target=portfolio';
-            window.location.href = loginHref;
-          } catch (err) {
-            // Fallback to root-relative if anything goes wrong
-            window.location.href = '/login.html?target=portfolio';
-          }
-        });
-    }
 
     return a;
   }
@@ -237,26 +199,29 @@
     }, { root:null, rootMargin:'0px 0px -60px 0px', threshold:0.12 });
 
     Array.from(tilesGrid.children).forEach(el=>{ el.classList.add('reveal'); obs.observe(el); });
+
+    // Interactive glass glare: track pointer and update CSS vars for each tile
+    try {
+      const anchors = tilesGrid.querySelectorAll('a.group');
+      anchors.forEach(a=>{
+        const inner = a.querySelector('.tile-glass');
+        if (!inner) return;
+        a.addEventListener('pointermove', (e)=>{
+          const r = a.getBoundingClientRect();
+          const x = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+          const y = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
+          inner.style.setProperty('--mx', x + '%');
+          inner.style.setProperty('--my', y + '%');
+        });
+        a.addEventListener('pointerleave', ()=>{
+          inner.style.removeProperty('--mx');
+          inner.style.removeProperty('--my');
+        });
+      });
+    } catch(e) { /* non-fatal */ }
   }
 
   if (window.lucide) window.lucide.createIcons();
-
-  // Dialog
-  const dialog = document.getElementById('portfolio-dialog');
-  const dialogClose = document.getElementById('dialog-close');
-  const portfolioInput = document.getElementById('portfolio-input');
-  const portfolioOpen = document.getElementById('portfolio-open');
-
-  dialogClose?.addEventListener('click', ()=> dialog?.close());
-  portfolioOpen?.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const val = portfolioInput?.value.trim(); if (!val) return; portfolioUrl = val; localStorage.setItem('portfolioUrl', portfolioUrl); dialog?.close();
-    const node = Array.from(tilesGrid.children).find(el=> el.querySelector('h3')?.textContent==='Portfolio'); if (node) node.querySelector('p').textContent = `Currently set to ${portfolioUrl}`;
-  });
-
-  if (portfolioUrl && tilesGrid){
-    const node = Array.from(tilesGrid.children).find(el=> el.querySelector('h3')?.textContent==='Portfolio'); if (node) node.querySelector('p').textContent = `Currently set to ${portfolioUrl}`;
-  }
 
   // Hero translate only and hide scroll cue on first scroll
   const hero = document.getElementById('hero'); const heroInner = document.getElementById('hero-inner');

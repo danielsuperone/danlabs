@@ -292,3 +292,55 @@ html.dark input[type="password"]{
   #toast-container { top: 10px; right: 10px; }
 }
 
+/* --- Liquid glass tiles (Apple-like) --- */
+.tile-glass{
+  position: relative;
+  border-radius: 1.5rem; /* keep in sync with rounded-3xl */
+  /* Light theme: brighter glass */
+  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.30));
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.45), /* inner top highlight */
+    0 10px 30px rgba(2,6,23,0.12),       /* soft outer shadow */
+    0 1px 0 rgba(255,255,255,0.25);      /* subtle lift */
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  overflow: hidden;
+}
+html.dark .tile-glass{
+  /* Dark theme: cooler, deeper glass */
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border-color: rgba(148,163,184,0.22); /* slate-400-ish */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 18px 50px rgba(2,6,23,0.45);
+}
+
+/* Static gloss across the top curve */
+.tile-glass::before{
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 70% at 50% -20%, rgba(255,255,255,0.55), transparent 60%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: .40;
+  transition: opacity .25s ease;
+}
+html.dark .tile-glass::before{ opacity: .28; mix-blend-mode: overlay; }
+
+/* Pointer-reactive glare (driven by --mx/--my via JS) */
+.tile-glass::after{
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px 160px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.22), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.group:hover .tile-glass::after{ opacity: 1; }
+
+/* Micro interaction: a touch of lift on hover */
+.group:hover .tile-glass{ transform: translateY(-1px) scale(1.01); }
+
