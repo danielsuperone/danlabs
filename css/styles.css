@@ -172,24 +172,42 @@ html.dark input[type="password"]{
 .animate-stagger { will-change:transform,opacity; }
 
 /* View transitions and theme-driven variables */
-@supports (view-transition: name) {
-  ::view-transition-old(root) {
-    animation: move-out 360ms ease-in;
-  }
+@supports (view-transition-name: root) {
+  ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation: circle-in 500ms ease-out;
+    animation-duration: 0.4s;
+  }
+  
+  ::view-transition-old(root) {
+    animation-name: theme-fade-out;
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: theme-fade-in;
   }
 }
 
 /* Keyframes used by transitions */
-@keyframes move-out {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-8%); }
+@keyframes theme-fade-out {
+  from { 
+    opacity: 1; 
+    clip-path: circle(150% at 50% 0%);
+  }
+  to { 
+    opacity: 0; 
+    clip-path: circle(0% at 50% 0%);
+  }
 }
 
-@keyframes circle-in {
-  from { clip-path: circle(0% at 50% 0%); }
-  to { clip-path: circle(120% at 50% 0%); }
+@keyframes theme-fade-in {
+  from { 
+    opacity: 0;
+    clip-path: circle(0% at 50% 0%);
+  }
+  to { 
+    opacity: 1;
+    clip-path: circle(150% at 50% 0%);
+  }
 }
 
 /* Default theme: start dark by default, unless user chooses otherwise */
@@ -296,24 +314,33 @@ html.dark input[type="password"]{
 .tile-glass{
   position: relative;
   border-radius: 1.5rem; /* keep in sync with rounded-3xl */
-  /* Light theme: brighter glass */
-  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.30));
-  border: 1px solid rgba(0,0,0,0.06);
+  /* Default glass background (overridden by JS for tinted effect) */
+  background: rgba(255,255,255,0.05);
+  /* Remove border as wrapper handles it */
+  border: none;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.45), /* inner top highlight */
-    0 10px 30px rgba(2,6,23,0.12),       /* soft outer shadow */
-    0 1px 0 rgba(255,255,255,0.25);      /* subtle lift */
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
+    inset 0 1px 0 rgba(255,255,255,0.1), /* subtle inner highlight */
+    0 4px 20px rgba(0,0,0,0.05);         /* very soft shadow */
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 html.dark .tile-glass{
   /* Dark theme: cooler, deeper glass */
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  border-color: rgba(148,163,184,0.22); /* slate-400-ish */
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.08),
-    0 18px 50px rgba(2,6,23,0.45);
+  background: rgba(0,0,0,0.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* Smooth entry animation */
+@keyframes smoothFadeUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-smooth-entry {
+  animation: smoothFadeUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 /* Static gloss across the top curve */
@@ -343,4 +370,188 @@ html.dark .tile-glass::before{ opacity: .28; mix-blend-mode: overlay; }
 
 /* Micro interaction: a touch of lift on hover */
 .group:hover .tile-glass{ transform: translateY(-1px) scale(1.01); }
+
+/* === AGENCY ENHANCEMENTS === */
+
+/* Service cards subtle hover */
+.service-card{
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+.service-card:hover{
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(99,102,241,0.25);
+}
+
+/* Contact form styling enhancements */
+.contact-form{
+  box-shadow: 0 20px 60px rgba(2,6,23,0.12);
+}
+html.dark .contact-form{
+  box-shadow: 0 20px 60px rgba(2,6,23,0.35);
+}
+
+.contact-form input, .contact-form textarea{
+  transition: all .2s ease;
+}
+
+.contact-form input:focus, .contact-form textarea:focus{
+  transform: translateY(-1px);
+}
+
+/* Infinite Logo Carousel */
+.logo-carousel-section{
+  background: linear-gradient(180deg, transparent, rgba(99,102,241,0.02), transparent);
+}
+
+html.dark .logo-carousel-section{
+  background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05), transparent);
+}
+
+.logo-carousel{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.logo-track{
+  display: flex;
+  gap: 3rem;
+  animation: scroll-logos 25s linear infinite;
+  width: max-content;
+}
+
+@keyframes scroll-logos{
+  0%{ transform: translateX(0); }
+  100%{ transform: translateX(-25%); } /* Move only 1/4th because we have 4 sets now */
+}
+
+.logo-item{
+  flex-shrink: 0;
+  width: 180px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all .3s ease;
+}
+
+html.dark .logo-item{
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.08);
+}
+
+.logo-item:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99,102,241,0.15);
+}
+
+.logo-image{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: none;
+  opacity: 0.85;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+html.dark .logo-image{
+  filter: none;
+  opacity: 0.8;
+}
+
+.logo-item:hover .logo-image{
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+html.dark .logo-item:hover .logo-image{
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Pause animation on hover for accessibility */
+.logo-carousel:hover .logo-track{
+  animation-play-state: paused;
+}
+
+/* Grid improvements for featured projects */
+#tiles-grid{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media(min-width:640px){
+  #tiles-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(min-width:1024px){
+  #tiles-grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Featured tiles span 2 columns on large screens */
+@media(min-width:1024px){
+  .lg\:col-span-2{
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* Premium gradient text for emphasis */
+.gradient-premium{
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Smooth scrolling for anchor links */
+html{
+  scroll-behavior: smooth;
+}
+
+/* Success message styling (for form submission feedback) */
+.success-message{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  color: #0f172a;
+  padding: 2rem 2.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 25px 70px rgba(16,185,129,0.35), 0 0 0 1px rgba(16,185,129,0.2);
+  z-index: 9999;
+  animation: success-pop 0.5s cubic-bezier(.2,.8,.25,1) both;
+  max-width: 90vw;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html.dark .success-message{
+  background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.95));
+  color: #f8fafc;
+  box-shadow: 0 25px 70px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.3);
+}
+
+@keyframes success-pop{
+  from{ 
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0.8) translateY(20px); 
+  }
+  to{ 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1) translateY(0); 
+  }
+}
+
 

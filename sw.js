@@ -1,5 +1,5 @@
 // Minimal service worker: serves basic offline responses and caches manifest and assets for PWA install experience
-const CACHE = 'danlabs-cache-v1';
+const CACHE = 'danlabs-cache-v7';
 const ASSETS = [
   '/',
   '/index.html',

@@ -3,24 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>DanLabs - By Daniel Buttigieg</title>
-    <meta name="description" content="A polished hub for DanLabs projects: games, apps, and a customizable portfolio tile." />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>DanLabs - Digital Solutions & Creative Agency</title>
+    <meta name="description" content="Professional web development, digital marketing, and creative media services. From corporate websites to wedding photography - we bring your vision to life." />
   <!-- Tailwind CDN for quick parity with the original Tailwind styles -->
   <script>window.tailwind = { config: { darkMode: 'class' } }</script>
   <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.268.0/dist/lucide.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css?v=7">
   <!-- PWA / Apple Web App -->
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0f1724">
   <link rel="apple-touch-icon" href="/assets/profile-picture.png">
   <meta name="apple-mobile-web-app-title" content="DanLabs">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <!-- Google AdSense (async) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2467278065054648"
-   crossorigin="anonymous"></script>
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/png" href="/assets/profile-picture.png">
   </head>
   <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
     <div class="relative min-h-screen selection:bg-indigo-500/30">
@@ -68,22 +69,172 @@
         <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <section id="hero" class="relative min-h-[90vh] py-16 sm:py-24 flex items-center">
             <div id="hero-inner" class="mx-auto max-w-3xl text-center">
-              <h1 class="hero-heading text-4xl font-bold tracking-tight sm:text-6xl text-slate-900 dark:text-white">Super-Modern Playground for <span class="bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 bg-clip-text text-transparent">Apps & Games</span></h1>
-              <p class="mx-auto mt-5 max-w-2xl text-balance text-slate-600 dark:text-slate-300">A polished hub for DanLabs projects: social games, Betting games and a clean portfolio website of mine.</p>
+              <h1 class="hero-heading text-4xl font-bold tracking-tight sm:text-6xl text-slate-900 dark:text-white">Digital Solutions & <span class="bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 bg-clip-text text-transparent">Creative Agency</span></h1>
+              <p class="mx-auto mt-5 max-w-2xl text-balance text-slate-600 dark:text-slate-300">We craft exceptional web experiences, drive digital growth, and capture memorable moments. Serving businesses and individuals with enterprise-grade web development, strategic digital marketing, and professional photography & videography.</p>
 
-              <div class="mt-8 inline-flex items-center gap-3">
-                <a href="https://danlabs.me" target="_blank" rel="noreferrer" class="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80 [html:not(.dark)_&]:text-slate-700 [html:not(.dark)_&]:hover:bg-white [html:not(.dark)_&]:hover:border-sky-300">danlabs.me</a>
-                <a href="#tiles" class="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,130,246,0.8)] hover:shadow-[0_15px_35px_-10px_rgba(59,130,246,0.9)]">Explore</a>
+              <div class="mt-8 inline-flex flex-wrap items-center justify-center gap-3">
+                <a href="#contact" class="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,130,246,0.8)] hover:shadow-[0_15px_35px_-10px_rgba(59,130,246,0.9)]">Get Started</a>
+                <a href="#projects" class="rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80 [html:not(.dark)_&]:text-slate-700 [html:not(.dark)_&]:hover:bg-white [html:not(.dark)_&]:hover:border-sky-300">View Our Work</a>
               </div>
             </div>
 
             <div id="scroll-cue" class="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-slate-400 dark:text-slate-400 [html:not(.dark)_&]:text-slate-500">Scroll to reveal ↓</div>
           </section>
 
-          <section id="tiles" class="pb-28">
+          <section id="projects" class="pb-16">
+            <div class="mx-auto max-w-4xl text-center mb-8">
+              <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Featured Projects</h2>
+              <p class="text-slate-600 dark:text-slate-300 mb-8">Real results for real clients</p>
+              
+              <!-- Filter Buttons -->
+              <div class="flex flex-wrap justify-center gap-3 mb-8" id="project-filters">
+                <button data-filter="all" class="filter-btn active rounded-full px-5 py-2 text-sm font-medium transition-all bg-indigo-500 text-white shadow-lg shadow-indigo-500/30">All</button>
+                <button data-filter="client" class="filter-btn rounded-full px-5 py-2 text-sm font-medium transition-all bg-white/5 text-slate-600 hover:bg-white/10 dark:text-slate-300 dark:bg-white/5 dark:hover:bg-white/10 border border-black/5 dark:border-white/10">Client Work</button>
+                <button data-filter="personal" class="filter-btn rounded-full px-5 py-2 text-sm font-medium transition-all bg-white/5 text-slate-600 hover:bg-white/10 dark:text-slate-300 dark:bg-white/5 dark:hover:bg-white/10 border border-black/5 dark:border-white/10">Personal Projects</button>
+              </div>
+            </div>
             <div id="tiles-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
           </section>
+
+          <!-- Services Overview -->
+          <section id="services" class="pb-28">
+            <div class="mx-auto max-w-4xl text-center mb-12">
+              <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">What We Do</h2>
+              <p class="text-slate-600 dark:text-slate-300">Full-spectrum digital solutions tailored to your needs</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="service-card rounded-2xl p-8 bg-gradient-to-br from-indigo-500/10 via-sky-500/10 to-cyan-500/10 border border-indigo-500/20 backdrop-blur dark:from-indigo-500/20 dark:via-sky-500/20 dark:to-cyan-500/20 dark:border-indigo-500/30 transition-all hover:scale-105">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-3xl mb-4 shadow-lg shadow-indigo-500/30">💻</div>
+                <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Web Development</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Corporate sites, e-commerce platforms, and custom booking systems. Built for performance and scalability.</p>
+              </div>
+              <div class="service-card rounded-2xl p-8 bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur dark:from-blue-500/20 dark:via-indigo-500/20 dark:to-purple-500/20 dark:border-blue-500/30 transition-all hover:scale-105">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-400 flex items-center justify-center text-3xl mb-4 shadow-lg shadow-blue-500/30">📱</div>
+                <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Digital Marketing</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Social media management, targeted ads, and brand strategy. We help your business grow online.</p>
+              </div>
+              <div class="service-card rounded-2xl p-8 bg-gradient-to-br from-purple-500/10 via-violet-500/10 to-fuchsia-500/10 border border-purple-500/20 backdrop-blur dark:from-purple-500/20 dark:via-violet-500/20 dark:to-fuchsia-500/20 dark:border-purple-500/30 transition-all hover:scale-105">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-400 flex items-center justify-center text-3xl mb-4 shadow-lg shadow-purple-500/30">📸</div>
+                <h3 class="text-xl font-bold mb-3 text-slate-900 dark:text-white">Creative Media</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Professional photography and videography for events, brands, weddings, and graduations.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact Section -->
+          <section id="contact" class="pb-28">
+            <div class="mx-auto max-w-2xl">
+              <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Let's Work Together</h2>
+                <p class="text-slate-600 dark:text-slate-300">Whether you need a website, marketing strategy, or event coverage - we'd love to hear from you.</p>
+              </div>
+              
+              <form action="https://formsubmit.co/daniel@danlabs.me" method="POST" class="contact-form rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur dark:border-white/10 dark:bg-white/5 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label for="name" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">First Name</label>
+                    <input type="text" id="name" name="name" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500" placeholder="John">
+                  </div>
+                  <div>
+                    <label for="surname" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">Last Name</label>
+                    <input type="text" id="surname" name="surname" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500" placeholder="Doe">
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label for="email" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">Email</label>
+                    <input type="email" id="email" name="email" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500" placeholder="john@example.com">
+                  </div>
+                  <div>
+                    <label for="phone" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500" placeholder="+1 (555) 000-0000">
+                  </div>
+                </div>
+                
+                <div class="mb-6">
+                  <label for="project" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">Tell us about your project</label>
+                  <textarea id="project" name="project" rows="5" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 resize-none" placeholder="I need a website for my business / I'm looking for wedding photography / etc."></textarea>
+                </div>
+                
+                <!-- FormSubmit Configuration -->
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://danlabs.me?success=true">
+                <input type="text" name="_honey" style="display:none">
+                
+                <button type="submit" class="w-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-6 py-3 font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,130,246,0.8)] hover:shadow-[0_15px_35px_-10px_rgba(59,130,246,0.9)] transition-all">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </section>
         </div>
+
+        <!-- Client Logo Carousel -->
+        <section class="logo-carousel-section border-t border-white/10 dark:border-white/10 [html:not(.dark)_&]:border-sky-200 py-12 overflow-hidden">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h3 class="text-center text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-8">Trusted By</h3>
+            <div class="logo-carousel">
+              <div class="logo-track">
+                <!-- First set -->
+                <div class="logo-item">
+                  <img src="assets/client-logos/dilja-logo.png" alt="Dilja Engineering" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/tulipan-logo.png" alt="Tulipan" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/noahs-logo.png" alt="Noah's Barber Studio" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/desira-logo.png" alt="Desira Barber Studio" class="logo-image">
+                </div>
+                <!-- Duplicate set 1 -->
+                <div class="logo-item">
+                  <img src="assets/client-logos/dilja-logo.png" alt="Dilja Engineering" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/tulipan-logo.png" alt="Tulipan" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/noahs-logo.png" alt="Noah's Barber Studio" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/desira-logo.png" alt="Desira Barber Studio" class="logo-image">
+                </div>
+                <!-- Duplicate set 2 -->
+                <div class="logo-item">
+                  <img src="assets/client-logos/dilja-logo.png" alt="Dilja Engineering" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/tulipan-logo.png" alt="Tulipan" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/noahs-logo.png" alt="Noah's Barber Studio" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/desira-logo.png" alt="Desira Barber Studio" class="logo-image">
+                </div>
+                <!-- Duplicate set 3 -->
+                <div class="logo-item">
+                  <img src="assets/client-logos/dilja-logo.png" alt="Dilja Engineering" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/tulipan-logo.png" alt="Tulipan" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/noahs-logo.png" alt="Noah's Barber Studio" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/desira-logo.png" alt="Desira Barber Studio" class="logo-image">
+                </div>
+                <div class="logo-item">
+                  <img src="assets/client-logos/desira-logo.png" alt="Desira Barber Studio" class="logo-image">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <!-- Portfolio dialog -->
         <dialog id="portfolio-dialog" class="backdrop:bg-black/60 rounded-2xl p-0">
@@ -142,11 +293,11 @@
       <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
       <footer class="border-t border-white/10 dark:border-white/10 [html:not(.dark)_&]:border-sky-200 py-10 text-center text-sm text-slate-400 dark:text-slate-400 [html:not(.dark)_&]:text-slate-600">
-        © <span id="year"></span> DanLabs • Built with love and a bit of flair &lt;3
+        © <span id="year"></span> DanLabs - Digital Solutions & Creative Agency • Crafted with precision and passion
       </footer>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=7"></script>
   </body>
 </html>
 

@@ -115,11 +115,22 @@
           document.body.offsetHeight;
         };
 
+        // Add icon rotation animation
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+          icon.style.transition = 'transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+          icon.style.transform = 'rotate(360deg)';
+          setTimeout(() => {
+            icon.style.transform = 'rotate(0deg)';
+          }, 400);
+        }
+
         if (!document.startViewTransition) {
           doToggle();
           return;
         }
 
+        // Use View Transition API for smooth curtain effect
         document.startViewTransition(() => {
           doToggle();
         });
@@ -127,14 +138,102 @@
     }
   })();
 
-  // Tiles data (with emojis)
+  // Tiles data - Client work featured first, then personal projects
+  // Warm/Sunset Theme Variations (Orange, Red, Pink, Purple)
+  const warmGradients = [
+    {from:'#F59E0B', via:'#EF4444', to:'#EC4899'}, // Orange -> Red -> Pink
+    {from:'#EC4899', via:'#F59E0B', to:'#EF4444'}, // Pink -> Orange -> Red
+    {from:'#EF4444', via:'#EC4899', to:'#8B5CF6'}, // Red -> Pink -> Purple
+    {from:'#F97316', via:'#DB2777', to:'#7C3AED'}, // Orange -> Pink -> Violet
+    {from:'#F43F5E', via:'#FB923C', to:'#FBBF24'}, // Rose -> Orange -> Amber
+    {from:'#DB2777', via:'#F59E0B', to:'#F43F5E'}, // Pink -> Orange -> Rose
+  ];
+
   const tiles = [
-    { title:'GameBox', href:'https://gamebox.danlabs.me', emoji:'🎮', accent:'#60A5FA', description:'Play Mafia, GeoGuessr-style rounds, Who Am I, and more with friends. Fast lobbies, voice-ready rooms, instant invites.', gradient:{from:'#60A5FA',via:'#A78BFA',to:'#22D3EE'} },
-    { title:'GAMBL', href:'https://gambl.danlabs.me', emoji:'💎', accent:'#22D3EE', description:'Casino-grade feel with a clean UI. Think Stake-esque: dice, crash, mines, all with on-page stats and fairness proofs.', gradient:{from:'#06B6D4',via:'#22D3EE',to:'#10B981'} },
-    { title:'StudyFlow', href:'https://studyflow.danlabs.me', emoji:'📚', accent:'#F59E0B', description:'Smart study management platform with flashcards, progress tracking, and spaced repetition algorithms. Boost your learning efficiency.', gradient:{from:'#F59E0B',via:'#EF4444',to:'#EC4899'} },
-    { title:'Photography', href:'https://photography.danlabs.me', emoji:'📸', accent:'#EC4899', description:'Explore my photography portfolio. Capturing moments, stories, and perspectives through the lens.', gradient:{from:'#EC4899',via:'#F59E0B',to:'#EF4444'} },
-    { title:'Portfolio', href:'login.html?target=portfolio', emoji:'🌟', accent:'#8B5CF6', description:'View my professional portfolio and projects. Showcasing work, achievements, and creative endeavors.', gradient:{from:'#8B5CF6',via:'#EC4899',to:'#F59E0B'}, requiresLogin:true },
-    { title:'About DanLabs', href:'https://danlabs.me/about', emoji:'🌐', accent:'#A78BFA', description:'Team, stack, and roadmap. Minimal words, maximal clarity. Keep it transparent and up-to-date.', gradient:{from:'#A78BFA',via:'#60A5FA',to:'#38BDF8'} }
+    // === CLIENT PROJECTS ===
+    { 
+      title:'Dilja Engineering', 
+      href:'https://dilja-engineering.danlabs.me/', 
+      emoji:'🏗️', 
+      accent:'#F59E0B', 
+      description:'Corporate website for industrial engineering firm. Professional design with service showcases and contact integration.',
+      gradient: warmGradients[0],
+      category: 'client'
+    },
+    { 
+      title:'Tulipan', 
+      href:'https://tulipan.danlabs.me/', 
+      emoji:'🛍️', 
+      accent:'#EC4899', 
+      description:'Modern e-commerce platform for fashion reseller. Sleek product displays, cart system, and seamless checkout experience.',
+      gradient: warmGradients[1],
+      category: 'client'
+    },
+    { 
+      title:'Noah\'s Barber Studio', 
+      href:'https://noahsbarberstudio.danlabs.me/', 
+      emoji:'✂️', 
+      accent:'#EF4444', 
+      description:'Custom booking system for barber shop. Real-time appointments, service selection, and client management.',
+      gradient: warmGradients[2],
+      category: 'client'
+    },
+    { 
+      title:'Desira Barber Studio', 
+      href:'https://desirabarberstudio.danlabs.me/', 
+      emoji:'💈', 
+      accent:'#8B5CF6', 
+      description:'Elegant barbershop website with online booking. Clean design, gallery showcase, and appointment scheduler.',
+      gradient: warmGradients[3],
+      category: 'client'
+    },
+    
+    // === PERSONAL PROJECTS ===
+    { 
+      title:'GameBox', 
+      href:'https://gamebox.danlabs.me', 
+      emoji:'🎮', 
+      accent:'#F43F5E', 
+      description:'Multiplayer social games platform. Mafia, GeoGuessr-style rounds, Who Am I, and more with friends.',
+      gradient: warmGradients[4],
+      category: 'personal'
+    },
+    { 
+      title:'GAMBL', 
+      href:'https://gambl.danlabs.me', 
+      emoji:'💎', 
+      accent:'#DB2777', 
+      description:'Casino-style gaming platform with dice, crash, mines. On-page stats and fairness verification.',
+      gradient: warmGradients[5],
+      category: 'personal'
+    },
+    { 
+      title:'StudyFlow', 
+      href:'https://studyflow.danlabs.me', 
+      emoji:'📚', 
+      accent:'#F59E0B', 
+      description:'Smart study management with flashcards, progress tracking, and spaced repetition algorithms.',
+      gradient: warmGradients[0],
+      category: 'personal'
+    },
+    { 
+      title:'Photography', 
+      href:'https://photography.danlabs.me', 
+      emoji:'📸', 
+      accent:'#EC4899', 
+      description:'Personal photography portfolio. Capturing moments, stories, and perspectives through the lens.',
+      gradient: warmGradients[1],
+      category: 'personal'
+    },
+    { 
+      title:'DanLabs Portfolio', 
+      href:'login.html?target=portfolio', 
+      emoji:'🚀', 
+      accent:'#EF4444', 
+      description:'The main portfolio hub. Access restricted - requires authentication.',
+      gradient: warmGradients[2],
+      category: 'personal'
+    }
   ];
 
   const tilesGrid = document.getElementById('tiles-grid');
@@ -142,35 +241,59 @@
   function buildTile(item, idx){
     const a = document.createElement('a');
     a.href = item.href || '#';
-    // Only open in new tab if it's an external link (not login.html)
+    // Only open in new tab if it's an external link
     if (item.href && !item.requiresLogin) a.target = '_blank';
     a.className = 'group relative block rounded-3xl p-[1px] transition overflow-hidden';
+    // Border gradient (via p-[1px] wrapper)
     a.style.background = `linear-gradient(140deg, ${item.gradient.from} 0%, ${item.gradient.via} 40%, ${item.gradient.to} 100%)`;
     a.dataset.index = idx;
+    a.dataset.category = item.category; // Store category for filtering
+    
+    // Uniform grid - removed col-span-2 logic for consistency
 
     const inner = document.createElement('div');
     inner.className = 'tile-glass rounded-3xl p-5 transition-transform duration-500 ease-out transform will-change-transform';
+    // Subtle tinted glass background (10% opacity)
+    inner.style.background = `linear-gradient(140deg, ${item.gradient.from}1a, ${item.gradient.via}1a, ${item.gradient.to}1a)`;
 
-    const row = document.createElement('div'); row.className = 'relative flex items-start gap-4';
-    // simplified icon wrapper: no ring or white gradient so emoji sits directly on the tile inner background
-    const iconWrap = document.createElement('div'); iconWrap.className = 'icon';
+    const row = document.createElement('div'); 
+    row.className = 'relative flex items-start gap-4';
+    
+    const iconWrap = document.createElement('div'); 
+    iconWrap.className = 'icon';
     if (item.emoji){
-      const emoji = document.createElement('span'); emoji.textContent = item.emoji; emoji.className = 'text-2xl'; iconWrap.appendChild(emoji);
+      const emoji = document.createElement('span'); 
+      emoji.textContent = item.emoji; 
+      emoji.className = 'text-2xl'; 
+      iconWrap.appendChild(emoji);
     }
 
-    const txt = document.createElement('div'); txt.className = 'min-w-0';
-    const h3wrap = document.createElement('div'); h3wrap.className = 'flex items-center gap-2';
-    const h3 = document.createElement('h3'); h3.className = 'truncate text-xl font-semibold text-black/90 dark:text-white/90'; h3.textContent = item.title;
-    const arrow = document.createElement('i'); arrow.setAttribute('data-lucide','arrow-up-right'); arrow.className = 'h-4 w-4 text-black/50 opacity-0 transition group-hover:opacity-100 dark:text-white/60';
-    h3wrap.appendChild(h3); h3wrap.appendChild(arrow);
+    const txt = document.createElement('div'); 
+    txt.className = 'min-w-0 flex-1';
+    const h3wrap = document.createElement('div'); 
+    h3wrap.className = 'flex items-center gap-2';
+    const h3 = document.createElement('h3'); 
+    h3.className = 'truncate text-xl font-semibold text-black/90 dark:text-white/90'; 
+    h3.textContent = item.title;
+    const arrow = document.createElement('i'); 
+    arrow.setAttribute('data-lucide','arrow-up-right'); 
+    arrow.className = 'h-4 w-4 text-black/50 opacity-0 transition group-hover:opacity-100 dark:text-white/60';
+    h3wrap.appendChild(h3); 
+    h3wrap.appendChild(arrow);
 
-    const p = document.createElement('p'); p.className = 'mt-1 line-clamp-3 text-sm text-black/70 dark:text-white/70';
+    const p = document.createElement('p'); 
+    p.className = 'mt-1 line-clamp-3 text-sm text-black/70 dark:text-white/70';
     p.textContent = item.description;
 
-    txt.appendChild(h3wrap); txt.appendChild(p);
-    row.appendChild(iconWrap); row.appendChild(txt); inner.appendChild(row);
+    txt.appendChild(h3wrap); 
+    txt.appendChild(p);
+    row.appendChild(iconWrap); 
+    row.appendChild(txt); 
+    inner.appendChild(row);
 
-    const flare = document.createElement('div'); flare.className = 'pointer-events-none absolute inset-0 rounded-3xl opacity-0 blur-md transition group-hover:opacity-100'; flare.style.background = `radial-gradient(60% 40% at 20% -10%, ${item.accent}40%, transparent 60%)`;
+    const flare = document.createElement('div'); 
+    flare.className = 'pointer-events-none absolute inset-0 rounded-3xl opacity-0 blur-md transition group-hover:opacity-100'; 
+    flare.style.background = `radial-gradient(60% 40% at 20% -10%, ${item.accent}40%, transparent 60%)`;
     inner.appendChild(flare);
     a.appendChild(inner);
 
@@ -178,7 +301,25 @@
   }
 
   if (tilesGrid){
-    tiles.forEach((t,i)=> tilesGrid.appendChild(buildTile(t,i)));
+    // Initial render
+    const renderTiles = (filter = 'all') => {
+      tilesGrid.innerHTML = '';
+      const filtered = filter === 'all' ? tiles : tiles.filter(t => t.category === filter);
+      
+      filtered.forEach((t,i)=> {
+        const el = buildTile(t,i);
+        tilesGrid.appendChild(el);
+        // Re-observe for animation
+        el.classList.add('reveal');
+        obs.observe(el);
+      });
+      
+      // Re-initialize icons
+      if (window.lucide) window.lucide.createIcons();
+      
+      // Re-bind glass effect
+      bindGlassEffect();
+    };
 
     // Reveal observer with staggered inner transition
     const obs = new IntersectionObserver((entries)=>{
@@ -188,37 +329,59 @@
           el.classList.add('reveal-visible');
           // apply animation classes to the entire tile anchor so the whole card animates
           const anchor = el;
-          anchor.style.animationDelay = `${idx*90}ms`;
-          anchor.classList.add('animate__animated','animate__fadeInUp','animate__faster');
+          // Reduced delay for smoother ripple (50ms instead of 90ms)
+          anchor.style.animationDelay = `${idx*50}ms`;
+          // Use custom smooth entry animation instead of animate.css
+          anchor.classList.add('animate-smooth-entry');
           // also ensure the inner element transitions to final state for any subtle transforms
           const inner = el.querySelector('.rounded-3xl');
-          if (inner) inner.style.transitionDelay = `${idx*90}ms`;
+          if (inner) inner.style.transitionDelay = `${idx*50}ms`;
           obs.unobserve(el);
         }
       });
     }, { root:null, rootMargin:'0px 0px -60px 0px', threshold:0.12 });
 
-    Array.from(tilesGrid.children).forEach(el=>{ el.classList.add('reveal'); obs.observe(el); });
+    // Glass effect binding function
+    const bindGlassEffect = () => {
+      try {
+        const anchors = tilesGrid.querySelectorAll('a.group');
+        anchors.forEach(a=>{
+          const inner = a.querySelector('.tile-glass');
+          if (!inner) return;
+          a.addEventListener('pointermove', (e)=>{
+            const r = a.getBoundingClientRect();
+            const x = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+            const y = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
+            inner.style.setProperty('--mx', x + '%');
+            inner.style.setProperty('--my', y + '%');
+          });
+          a.addEventListener('pointerleave', ()=>{
+            inner.style.removeProperty('--mx');
+            inner.style.removeProperty('--my');
+          });
+        });
+      } catch(e) { /* non-fatal */ }
+    };
 
-    // Interactive glass glare: track pointer and update CSS vars for each tile
-    try {
-      const anchors = tilesGrid.querySelectorAll('a.group');
-      anchors.forEach(a=>{
-        const inner = a.querySelector('.tile-glass');
-        if (!inner) return;
-        a.addEventListener('pointermove', (e)=>{
-          const r = a.getBoundingClientRect();
-          const x = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
-          const y = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
-          inner.style.setProperty('--mx', x + '%');
-          inner.style.setProperty('--my', y + '%');
+    // Initial render call
+    renderTiles('all');
+
+    // Filter button logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active state
+        filterBtns.forEach(b => {
+          b.classList.remove('active', 'bg-indigo-500', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
+          b.classList.add('bg-white/5', 'text-slate-600', 'dark:text-slate-300');
         });
-        a.addEventListener('pointerleave', ()=>{
-          inner.style.removeProperty('--mx');
-          inner.style.removeProperty('--my');
-        });
+        btn.classList.remove('bg-white/5', 'text-slate-600', 'dark:text-slate-300');
+        btn.classList.add('active', 'bg-indigo-500', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
+        
+        // Render filtered tiles
+        renderTiles(btn.dataset.filter);
       });
-    } catch(e) { /* non-fatal */ }
+    });
   }
 
   if (window.lucide) window.lucide.createIcons();
@@ -375,5 +538,144 @@
   const style = document.createElement('style');
   style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}`;
   document.head.appendChild(style);
+
+  // === AGENCY FEATURES ===
+  
+  // Handle contact form submission via AJAX to prevent redirect loop
+  const contactForm = document.querySelector('.contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      const originalText = btn.innerText;
+      btn.innerText = 'Sending...';
+      btn.disabled = true;
+
+      const formData = new FormData(this);
+      
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          // Show success message
+          const successDiv = document.createElement('div');
+          successDiv.className = 'success-message';
+          successDiv.innerHTML = `
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <div style="width:3rem;height:3rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">✓</div>
+              <div>
+                <h3 style="margin:0 0 0.25rem 0; font-size:1.5rem; font-weight:700;">Message Sent! 🎉</h3>
+                <p style="margin:0; opacity:0.95; font-size:0.95rem;">We'll get back to you shortly.</p>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(successDiv);
+          
+          // Trigger confetti
+          if (window.confetti) {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#059669', '#34d399', '#6ee7b7'] });
+          }
+          
+          // Reset form
+          this.reset();
+          
+          // Remove success message after delay
+          setTimeout(() => {
+            successDiv.style.animation = 'success-pop 0.3s cubic-bezier(.2,.8,.25,1) reverse both';
+            setTimeout(() => successDiv.remove(), 300);
+          }, 4000);
+        } else {
+          alert('Oops! There was a problem submitting your form');
+        }
+      })
+      .catch(error => {
+        alert('Oops! There was a problem submitting your form');
+      })
+      .finally(() => {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      });
+    });
+  }
+  
+  // Check for form submission success (legacy support)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('success') === 'true') {
+    // Show success message with confetti
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.innerHTML = `
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="width:3rem;height:3rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">✓</div>
+        <div>
+          <h3 style="margin:0 0 0.25rem 0; font-size:1.5rem; font-weight:700;">Message Sent! 🎉</h3>
+          <p style="margin:0; opacity:0.95; font-size:0.95rem;">We'll get back to you shortly.</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(successDiv);
+    
+    // Trigger confetti animation
+    if (window.confetti) {
+      // Center burst
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10b981', '#059669', '#34d399', '#6ee7b7']
+      });
+      
+      // Side bursts for extra effect
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ['#10b981', '#059669', '#34d399']
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ['#10b981', '#059669', '#34d399']
+        });
+      }, 150);
+    }
+    
+    // Remove after 4 seconds
+    setTimeout(() => {
+      successDiv.style.animation = 'success-pop 0.3s cubic-bezier(.2,.8,.25,1) reverse both';
+      setTimeout(() => successDiv.remove(), 300);
+    }, 4000);
+    
+    // Clean URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#' || !href) return;
+      
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Update URL without triggering scroll
+        if (history.pushState) {
+          history.pushState(null, null, href);
+        }
+      }
+    });
+  });
 
 })();
