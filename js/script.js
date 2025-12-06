@@ -545,98 +545,60 @@ if ('serviceWorker' in navigator) {
 
   // === AGENCY FEATURES ===
   
-  // Handle contact form submission via AJAX to Cloudflare Pages Function
-  const contactForm = document.querySelector('.contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const btn = this.querySelector('button[type="submit"]');
-      const originalText = btn.innerText;
-      btn.innerText = 'Sending...';
-      btn.disabled = true;
-
-      // Check honeypot (spam protection)
-      const honeypot = this.querySelector('input[name="_honey"]');
-      if (honeypot && honeypot.value) {
-        // Silently reject spam
-        btn.innerText = originalText;
-        btn.disabled = false;
-        return;
-      }
-
-      const formData = new FormData(this);
-      
-      fetch('/api/submit', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Show success message
-          const successDiv = document.createElement('div');
-          successDiv.className = 'success-message';
-          successDiv.innerHTML = `
-            <div style="display:flex;align-items:center;gap:1rem;">
-              <div style="width:3rem;height:3rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">✓</div>
-              <div>
-                <h3 style="margin:0 0 0.25rem 0; font-size:1.5rem; font-weight:700;">Message Sent! 🎉</h3>
-                <p style="margin:0; opacity:0.95; font-size:0.95rem;">We'll get back to you shortly.</p>
-              </div>
-            </div>
-          `;
-          document.body.appendChild(successDiv);
-          
-          // Trigger confetti
-          if (window.confetti) {
-            confetti({ 
-              particleCount: 100, 
-              spread: 70, 
-              origin: { y: 0.6 }, 
-              colors: ['#10b981', '#059669', '#34d399', '#6ee7b7'] 
-            });
-            
-            // Side bursts
-            setTimeout(() => {
-              confetti({
-                particleCount: 50,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0, y: 0.6 },
-                colors: ['#10b981', '#059669', '#34d399']
-              });
-              confetti({
-                particleCount: 50,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1, y: 0.6 },
-                colors: ['#10b981', '#059669', '#34d399']
-              });
-            }, 150);
-          }
-          
-          // Reset form
-          this.reset();
-          
-          // Remove success message after delay
-          setTimeout(() => {
-            successDiv.style.animation = 'success-pop 0.3s cubic-bezier(.2,.8,.25,1) reverse both';
-            setTimeout(() => successDiv.remove(), 300);
-          }, 4000);
-        } else {
-          alert(data.message || 'Oops! There was a problem submitting your form');
-        }
-      })
-      .catch(error => {
-        console.error('Form submission error:', error);
-        alert('Oops! There was a problem submitting your form. Please try again.');
-      })
-      .finally(() => {
-        btn.innerText = originalText;
-        btn.disabled = false;
+  // Check for FormSubmit.co success redirect
+  if (window.location.search.includes('success=true')) {
+    // Show success message
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.innerHTML = `
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="width:3rem;height:3rem;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">✓</div>
+        <div>
+          <h3 style="margin:0 0 0.25rem 0; font-size:1.5rem; font-weight:700;">Message Sent! 🎉</h3>
+          <p style="margin:0; opacity:0.95; font-size:0.95rem;">We'll get back to you shortly.</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(successDiv);
+    
+    // Trigger confetti
+    if (window.confetti) {
+      confetti({ 
+        particleCount: 100, 
+        spread: 70, 
+        origin: { y: 0.6 }, 
+        colors: ['#10b981', '#059669', '#34d399', '#6ee7b7'] 
       });
-    });
+      
+      // Side bursts
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: ['#10b981', '#059669', '#34d399']
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: ['#10b981', '#059669', '#34d399']
+        });
+      }, 150);
+    }
+    
+    // Remove success message after delay
+    setTimeout(() => {
+      successDiv.style.animation = 'success-pop 0.3s cubic-bezier(.2,.8,.25,1) reverse both';
+      setTimeout(() => successDiv.remove(), 300);
+    }, 4000);
+    
+    // Clean up URL without page reload
+    const url = new URL(window.location);
+    url.searchParams.delete('success');
+    window.history.replaceState({}, document.title, url);
   }
   
   // Check for form submission success (legacy support)

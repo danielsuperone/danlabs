@@ -128,7 +128,11 @@
                 <p class="text-slate-600 dark:text-slate-300">Whether you need a website, marketing strategy, or event coverage - we'd love to hear from you.</p>
               </div>
               
-              <form class="contact-form rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur dark:border-white/10 dark:bg-white/5 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80">
+              <form action="https://formsubmit.co/daniel@danlabs.me" method="POST" class="contact-form rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur dark:border-white/10 dark:bg-white/5 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80">
+                <!-- FormSubmit.co configuration -->
+                <input type="hidden" name="_next" value="https://danlabs.me/?success=true">
+                <input type="hidden" name="_captcha" value="false">
+                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label for="name" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">First Name</label>
