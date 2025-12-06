@@ -12,11 +12,10 @@
   <script>window.tailwind = { config: { darkMode: 'class' } }</script>
   <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.268.0/dist/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css?v=7">
-  <!-- PWA / Apple Web App -->
-  <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="css/styles.css?v=8">
+  <!-- Theme and Icons -->
   <meta name="theme-color" content="#0f1724">
   <link rel="apple-touch-icon" href="/assets/profile-picture.png">
   <meta name="apple-mobile-web-app-title" content="DanLabs">
@@ -129,7 +128,7 @@
                 <p class="text-slate-600 dark:text-slate-300">Whether you need a website, marketing strategy, or event coverage - we'd love to hear from you.</p>
               </div>
               
-              <form action="https://formsubmit.co/daniel@danlabs.me" method="POST" class="contact-form rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur dark:border-white/10 dark:bg-white/5 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80">
+              <form class="contact-form rounded-3xl p-8 border border-white/10 bg-white/5 backdrop-blur dark:border-white/10 dark:bg-white/5 [html:not(.dark)_&]:border-sky-200 [html:not(.dark)_&]:bg-white/80">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label for="name" class="block text-sm font-medium mb-2 text-slate-900 dark:text-white">First Name</label>
@@ -157,10 +156,8 @@
                   <textarea id="project" name="project" rows="5" required class="w-full rounded-xl border px-4 py-3 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white text-slate-900 border-slate-300 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500 resize-none" placeholder="I need a website for my business / I'm looking for wedding photography / etc."></textarea>
                 </div>
                 
-                <!-- FormSubmit Configuration -->
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" value="https://danlabs.me?success=true">
-                <input type="text" name="_honey" style="display:none">
+                <!-- Honeypot for spam protection -->
+                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                 
                 <button type="submit" class="w-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-6 py-3 font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,130,246,0.8)] hover:shadow-[0_15px_35px_-10px_rgba(59,130,246,0.9)] transition-all">
                   Send Message
@@ -306,7 +303,7 @@
       </footer>
     </div>
 
-    <script src="js/script.js?v=7"></script>
+    <script src="js/script.js?v=8"></script>
   </body>
 </html>
 

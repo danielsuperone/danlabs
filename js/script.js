@@ -1,5 +1,19 @@
 'use strict';
 
+// === SERVICE WORKER CLEANUP - FORCE UNREGISTER ===
+// This prevents the old service worker from crashing the page
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister().then(function(success) {
+        console.log('[SW Cleanup] Unregistered service worker:', success);
+      });
+    }
+  }).catch(function(err) {
+    console.log('[SW Cleanup] Service worker unregistration failed:', err);
+  });
+}
+
 (function(){
   // --- Diagnostics: capture failed resource loads and unhandled rejections ---
   // This helps identify missing script/css requests (like `cide.min.js`) and where they were requested from.
@@ -498,16 +512,6 @@
           } catch(e){}
         });
 
-          // Register a minimal service worker to enable PWA installability and caching
-          if ('serviceWorker' in navigator) {
-            try {
-              // Use root-relative path for registration so the scope covers the site correctly
-              // and avoid 404s when the site is deployed under a different base path.
-              // Try root-relative first (typical production), fall back to relative path for local testing
-              navigator.serviceWorker.register('/sw.js').catch(()=> navigator.serviceWorker.register('sw.js').catch(()=>{}));
-            } catch(e){}
-          }
-
   // Wire events
   adminBtn?.addEventListener('click', openAdmin);
   adminDialog?.addEventListener('click', (e)=>{
@@ -541,27 +545,35 @@
 
   // === AGENCY FEATURES ===
   
-  // Handle contact form submission via AJAX to prevent redirect loop
+  // Handle contact form submission via AJAX to Cloudflare Pages Function
   const contactForm = document.querySelector('.contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      
       const btn = this.querySelector('button[type="submit"]');
       const originalText = btn.innerText;
       btn.innerText = 'Sending...';
       btn.disabled = true;
 
+      // Check honeypot (spam protection)
+      const honeypot = this.querySelector('input[name="_honey"]');
+      if (honeypot && honeypot.value) {
+        // Silently reject spam
+        btn.innerText = originalText;
+        btn.disabled = false;
+        return;
+      }
+
       const formData = new FormData(this);
       
-      fetch(this.action, {
+      fetch('/api/submit', {
         method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        body: formData
       })
-      .then(response => {
-        if (response.ok) {
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
           // Show success message
           const successDiv = document.createElement('div');
           successDiv.className = 'success-message';
@@ -578,7 +590,30 @@
           
           // Trigger confetti
           if (window.confetti) {
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#059669', '#34d399', '#6ee7b7'] });
+            confetti({ 
+              particleCount: 100, 
+              spread: 70, 
+              origin: { y: 0.6 }, 
+              colors: ['#10b981', '#059669', '#34d399', '#6ee7b7'] 
+            });
+            
+            // Side bursts
+            setTimeout(() => {
+              confetti({
+                particleCount: 50,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.6 },
+                colors: ['#10b981', '#059669', '#34d399']
+              });
+              confetti({
+                particleCount: 50,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.6 },
+                colors: ['#10b981', '#059669', '#34d399']
+              });
+            }, 150);
           }
           
           // Reset form
@@ -590,11 +625,12 @@
             setTimeout(() => successDiv.remove(), 300);
           }, 4000);
         } else {
-          alert('Oops! There was a problem submitting your form');
+          alert(data.message || 'Oops! There was a problem submitting your form');
         }
       })
       .catch(error => {
-        alert('Oops! There was a problem submitting your form');
+        console.error('Form submission error:', error);
+        alert('Oops! There was a problem submitting your form. Please try again.');
       })
       .finally(() => {
         btn.innerText = originalText;
